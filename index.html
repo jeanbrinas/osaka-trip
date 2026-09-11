@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Osaka, 5D4N — Trip Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7EFE9;
+    --panel:#FFFCF9;
+    --ink:#241F2E;
+    --ink-soft:#5B5468;
+    --plum:#3A2E4D;
+    --vermilion:#C1372B;
+    --sakura:#EFAAB4;
+    --sakura-pale:#FBE4E8;
+    --moss:#5C7A5E;
+    --line:#E7D9CE;
+    --gold:#C98A3E;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.55;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    color:var(--plum);
+    margin:0;
+  }
+  a{color:var(--vermilion);}
+
+  /* ---------- layout ---------- */
+  .shell{
+    display:grid;
+    grid-template-columns:236px minmax(0,1fr);
+    max-width:1180px;
+    margin:0 auto;
+  }
+  nav.toc{
+    position:sticky;
+    top:0;
+    align-self:start;
+    height:100vh;
+    overflow-y:auto;
+    padding:38px 18px 38px 28px;
+    border-right:1px solid var(--line);
+  }
+  nav.toc .brand{
+    font-family:'Fraunces',serif;
+    font-size:1.05rem;
+    font-weight:600;
+    color:var(--vermilion);
+    letter-spacing:.01em;
+    margin-bottom:6px;
+  }
+  nav.toc .brand-sub{
+    font-size:.78rem;
+    color:var(--ink-soft);
+    margin-bottom:28px;
+  }
+  nav.toc ol{
+    list-style:none;
+    margin:0;padding:0;
+    counter-reset:navcount;
+  }
+  nav.toc li{margin-bottom:3px;}
+  nav.toc a{
+    counter-increment:navcount;
+    display:flex;
+    gap:9px;
+    text-decoration:none;
+    color:var(--ink-soft);
+    font-size:.86rem;
+    padding:7px 8px;
+    border-radius:6px;
+    transition:background .15s ease, color .15s ease;
+  }
+  nav.toc a::before{
+    content:counter(navcount,decimal-leading-zero);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;
+    color:var(--sakura);
+    padding-top:1px;
+  }
+  nav.toc a:hover{background:var(--sakura-pale); color:var(--plum);}
+
+  main{padding:0 44px 90px;min-width:0;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:56px 0 34px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.75rem;
+    color:var(--vermilion);
+    letter-spacing:.06em;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(2.3rem,5vw,3.6rem);
+    font-weight:600;
+    line-height:1.04;
+    max-width:14ch;
+  }
+  .hero p.lede{
+    max-width:56ch;
+    color:var(--ink-soft);
+    font-size:1.03rem;
+    margin-top:18px;
+  }
+  .hero-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    margin-top:38px;
+    border-top:1px solid var(--line);
+  }
+  .hero-stats div{
+    padding:18px 20px 4px 0;
+    border-right:1px solid var(--line);
+  }
+  .hero-stats div:last-child{border-right:none;}
+  .hero-stats .num{
+    font-family:'Fraunces',serif;
+    font-size:1.9rem;
+    color:var(--vermilion);
+    font-weight:600;
+    display:block;
+  }
+  .hero-stats .lbl{
+    font-size:.78rem;
+    color:var(--ink-soft);
+  }
+
+  section{padding:56px 0; border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  section > h2{
+    font-size:1.7rem;
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  section > .section-note{
+    color:var(--ink-soft);
+    max-width:62ch;
+    margin-bottom:28px;
+    font-size:.96rem;
+  }
+
+  /* ---------- checklist ---------- */
+  .checklist{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px 28px;
+  }
+  .check-item{
+    display:flex;
+    gap:12px;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .check-item .box{
+    width:17px;height:17px;
+    border:1.6px solid var(--vermilion);
+    border-radius:4px;
+    flex:none;
+    margin-top:3px;
+  }
+  .check-item h4{margin:0 0 3px;font-size:.96rem;font-weight:600;color:var(--plum);font-family:'IBM Plex Sans',sans-serif;}
+  .check-item p{margin:0;font-size:.87rem;color:var(--ink-soft);}
+
+  /* ---------- budget ---------- */
+  .budget-summary{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:34px;
+  }
+  .budget-summary .card{
+    flex:1;
+    min-width:200px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-left:4px solid var(--vermilion);
+    padding:20px 22px;
+    border-radius:4px;
+  }
+  .budget-summary .card.alt{border-left-color:var(--moss);}
+  .budget-summary .card .amt{
+    font-family:'Fraunces',serif;
+    font-size:1.65rem;
+    color:var(--plum);
+    font-weight:600;
+    display:block;
+  }
+  .budget-summary .card .amt small{font-size:.9rem;color:var(--ink-soft);font-family:'IBM Plex Sans',sans-serif;font-weight:400;}
+  .budget-summary .card .cap{font-size:.8rem;color:var(--ink-soft);margin-top:4px;}
+
+  table.budget{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.9rem;
+    background:var(--panel);
+    border:1px solid var(--line);
+  }
+  table.budget th{
+    text-align:left;
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:500;
+    font-size:.72rem;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    padding:12px 16px;
+    border-bottom:1.5px solid var(--plum);
+  }
+  table.budget td{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  table.budget tr:last-child td{border-bottom:none;}
+  table.budget td.num{font-family:'IBM Plex Mono',monospace;font-size:.85rem;text-align:right;white-space:nowrap;}
+  table.budget tr.total td{
+    font-weight:600;
+    border-top:1.5px solid var(--plum);
+    background:var(--sakura-pale);
+  }
+  table.budget td.item{font-weight:500;color:var(--plum);}
+  table.budget td.note{color:var(--ink-soft);font-size:.82rem;}
+  .budget-foot{margin-top:16px;font-size:.85rem;color:var(--ink-soft);}
+
+  /* ---------- itinerary ---------- */
+  .day{
+    display:grid;
+    grid-template-columns:96px 1fr;
+    gap:22px;
+    padding:28px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .day:last-child{border-bottom:none;}
+  .day .tag{
+    font-family:'Fraunces',serif;
+    color:var(--vermilion);
+  }
+  .day .tag .d{display:block;font-size:2.1rem;font-weight:600;line-height:1;}
+  .day .tag .n{display:block;font-size:.72rem;font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);margin-top:4px;}
+  .day h3{font-size:1.2rem;font-weight:600;margin-bottom:4px;}
+  .day .theme{font-size:.85rem;color:var(--moss);font-family:'IBM Plex Mono',monospace;margin-bottom:14px;}
+  .stop{
+    display:grid;
+    grid-template-columns:78px 1fr;
+    gap:14px;
+    padding:9px 0;
+  }
+  .stop .time{font-size:.78rem;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;padding-top:2px;}
+  .stop .what strong{color:var(--plum);}
+  .stop .what p{margin:2px 0 0;font-size:.87rem;color:var(--ink-soft);}
+  .daycost{
+    display:inline-block;
+    margin-top:14px;
+    font-size:.8rem;
+    background:var(--sakura-pale);
+    color:var(--plum);
+    padding:5px 12px;
+    border-radius:20px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .altbox{
+    margin-top:16px;
+    padding:14px 16px;
+    background:var(--panel);
+    border:1px dashed var(--gold);
+    border-radius:6px;
+    font-size:.86rem;
+    color:var(--ink-soft);
+  }
+  .altbox strong{color:var(--gold);}
+
+  /* ---------- packing / tips ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+  ul.plain{margin:0;padding:0;list-style:none;}
+  ul.plain li{
+    padding:9px 0 9px 20px;
+    position:relative;
+    border-bottom:1px solid var(--line);
+    font-size:.92rem;
+  }
+  ul.plain li::before{
+    content:"—";
+    position:absolute;left:0;top:9px;
+    color:var(--sakura);
+  }
+  .tip-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:18px 20px;
+    margin-bottom:14px;
+  }
+  .tip-card h4{margin:0 0 6px;font-size:.95rem;color:var(--plum);font-family:'IBM Plex Sans',sans-serif;font-weight:600;}
+  .tip-card p{margin:0;font-size:.87rem;color:var(--ink-soft);}
+
+  footer{
+    padding:40px 0 10px;
+    font-size:.78rem;
+    color:var(--ink-soft);
+  }
+
+  @media (max-width: 880px){
+    .shell{grid-template-columns:1fr;}
+    nav.toc{position:relative;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:24px;}
+    main{padding:0 20px 60px;}
+    .checklist,.grid2{grid-template-columns:1fr;}
+    .hero-stats{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="toc">
+    <div class="brand">大阪 · Osaka</div>
+    <div class="brand-sub">5D4N · Spring · Backpacker budget</div>
+    <ol>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#before-you-go">Before you go</a></li>
+      <li><a href="#budget">Budget</a></li>
+      <li><a href="#itinerary">Day-by-day</a></li>
+      <li><a href="#packing">Packing list</a></li>
+      <li><a href="#tips">Money & apps</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <section class="hero" id="overview">
+      <div class="kicker">TRIP PLAN — 5 DAYS, 4 NIGHTS</div>
+      <h1>Osaka on a backpacker budget</h1>
+      <p class="lede">A no-frills, spring-season plan for a group of 3–4: cherry blossoms, castle grounds,
+      street food alleys, a day trip to Nara, and enough slack in the schedule to just wander Dotonbori
+      at night. Built around the Osaka Amazing Pass and hostel-level costs.</p>
+      <div class="hero-stats">
+        <div><span class="num">₱30–40k</span><span class="lbl">est. cost per person, all-in</span></div>
+        <div><span class="num">5D4N</span><span class="lbl">Mar–May, spring travel window</span></div>
+        <div><span class="num">3–4</span><span class="lbl">travelers in the group</span></div>
+        <div><span class="num">KIX</span><span class="lbl">Kansai Intl. Airport, base: Namba</span></div>
+      </div>
+    </section>
+
+    <section id="before-you-go">
+      <h2>Before you go</h2>
+      <p class="section-note">Filipino passport holders need a visa for Japan — there's no visa-free entry, regardless of trip length. Start this early; it's the one item on this list with a real deadline.</p>
+      <div class="checklist">
+        <div class="check-item">
+          <div class="box"></div>
+          <div><h4>Apply for a Japan tourist visa</h4><p>Through JVAC (VFS Global — Manila, Cebu, or Davao). Visa itself is free for Filipinos; only the ~₱520 JVAC service fee applies. Apply 2–3 months before travel — a single-entry visa is valid 90 days from issue, so don't apply too early either.</p></div>
+        </div>
+        <div class="check-item">
+          <div class="box"></div>
+          <div><h4>Prepare visa documents</h4><p>Passport (6+ months validity), a day-by-day itinerary with named hotels, proof of accommodation, bank certificate + 3–6 months of bank statements, and ITR or certificate of employment.</p></div>
+        </div>
+        <div class="check-item">
+          <div class="box"></div>
+          <div><h4>Book flights early</h4><p>Spring is cherry blossom season — demand and prices climb. Budget carriers (Cebu Pacific, Jetstar Japan) and PAL/JAL/ANA all fly MNL–KIX direct; round trip runs roughly ₱12,000–19,000 if booked a few months out.</p></div>
+        </div>
+        <div class="check-item">
+          <div class="box"></div>
+          <div><h4>Book your hostel</h4><p>Namba, Shinsaibashi, or Namba/Nishinari-ku edge (Shin-Imamiya, Dobutsuen-mae) are the cheapest, most central bases. Confirm the exact address before your visa application — it needs to match.</p></div>
+        </div>
+        <div class="check-item">
+          <div class="box"></div>
+          <div><h4>Get travel insurance</h4><p>Not always required for the visa, but worth it for a group trip — covers delays, lost luggage, and medical costs.</p></div>
+        </div>
+        <div class="check-item">
+          <div class="box"></div>
+          <div><h4>Sort connectivity</h4><p>A pocket wifi or eSIM (Klook/Airalo) for the group — split the cost 3–4 ways to keep it cheap per person.</p></div>
+        </div>
+        <div class="check-item">
+          <div class="box"></div>
+          <div><h4>Notify your bank</h4><p>Flag your Philippine cards for international use if you plan to withdraw yen at 7-Eleven or FamilyMart ATMs.</p></div>
+        </div>
+        <div class="check-item">
+          <div class="box"></div>
+          <div><h4>Check Umeda Sky Building status</h4><p>It's closed for renovation from Oct 2025 until roughly late April 2026 — confirm it's reopened before building it into your Amazing Pass day.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="budget">
+      <h2>Budget — per person</h2>
+      <p class="section-note">Figures are backpacker-level estimates in Japanese yen and Philippine pesos, converted at roughly ¥1 = ₱0.41 (Sept 2026 — recheck closer to your trip). Split accommodation and transport further if you can share rooms and IC cards.</p>
+
+      <div class="budget-summary">
+        <div class="card">
+          <span class="amt">¥83,600<small> / ₱34,300</small></span>
+          <span class="cap">Core estimate — no USJ, hostel dorm, self-cooked/street-food meals</span>
+        </div>
+        <div class="card alt">
+          <span class="amt">¥92,500<small> / ₱37,900</small></span>
+          <span class="cap">With a USJ day added (mid-tier ticket, no Express Pass)</span>
+        </div>
+      </div>
+
+      <table class="budget">
+        <tr><th>Item</th><th>Notes</th><th>¥ / person</th><th>₱ / person</th></tr>
+        <tr>
+          <td class="item">Round-trip flight</td>
+          <td class="note">MNL–KIX, budget carrier, booked 2–3 months ahead</td>
+          <td class="num">—</td>
+          <td class="num">15,000</td>
+        </tr>
+        <tr>
+          <td class="item">Visa (JVAC service fee)</td>
+          <td class="note">Visa itself is free for Filipinos</td>
+          <td class="num">—</td>
+          <td class="num">520</td>
+        </tr>
+        <tr>
+          <td class="item">Travel insurance</td>
+          <td class="note">5-day basic policy</td>
+          <td class="num">—</td>
+          <td class="num">750</td>
+        </tr>
+        <tr>
+          <td class="item">Accommodation</td>
+          <td class="note">Hostel dorm bed × 4 nights, ~¥3,000/night</td>
+          <td class="num">12,000</td>
+          <td class="num">4,900</td>
+        </tr>
+        <tr>
+          <td class="item">Airport transfers</td>
+          <td class="note">KIX ↔ Namba round trip (Nankai/JR rapid)</td>
+          <td class="num">3,600</td>
+          <td class="num">1,480</td>
+        </tr>
+        <tr>
+          <td class="item">Local transport</td>
+          <td class="note">Osaka Amazing Pass 2-day (¥5,000) + ICOCA top-ups on other days</td>
+          <td class="num">6,500</td>
+          <td class="num">2,665</td>
+        </tr>
+        <tr>
+          <td class="item">Day-trip transport</td>
+          <td class="note">Return train fare to Nara</td>
+          <td class="num">1,200</td>
+          <td class="num">490</td>
+        </tr>
+        <tr>
+          <td class="item">Food</td>
+          <td class="note">~¥2,500/day × 5 days — convenience store, ramen/udon, street food</td>
+          <td class="num">12,500</td>
+          <td class="num">5,125</td>
+        </tr>
+        <tr>
+          <td class="item">Extra attractions</td>
+          <td class="note">Todaiji Temple entrance + small extras not on the pass</td>
+          <td class="num">1,000</td>
+          <td class="num">410</td>
+        </tr>
+        <tr>
+          <td class="item">Buffer / pasalubong</td>
+          <td class="note">Souvenirs, snacks, wiggle room</td>
+          <td class="num">—</td>
+          <td class="num">3,000</td>
+        </tr>
+        <tr class="total">
+          <td class="item">Core total</td>
+          <td class="note"></td>
+          <td class="num">~83,600</td>
+          <td class="num">~34,300</td>
+        </tr>
+        <tr>
+          <td class="item">+ Optional: USJ 1-day pass</td>
+          <td class="note">¥8,900–11,900 depending on date — pricier on weekends and holidays</td>
+          <td class="num">+8,900</td>
+          <td class="num">+3,650</td>
+        </tr>
+      </table>
+      <p class="budget-foot">Flight cost is the biggest lever here — everything else is fairly fixed at backpacker level. Watch fares 3–4 months out, since spring is peak cherry blossom demand.</p>
+    </section>
+
+    <section id="itinerary">
+      <h2>Day-by-day</h2>
+      <p class="section-note">Built around two Osaka Amazing Pass days, one Nara day trip, and a flexible last stretch for shopping or a splurge at Universal Studios Japan.</p>
+
+      <div class="day">
+        <div class="tag"><span class="d">1</span><span class="n">ARRIVAL</span></div>
+        <div>
+          <h3>Land, settle in, first taste of Dotonbori</h3>
+          <div class="theme">Namba · Dotonbori · Shinsaibashi</div>
+          <div class="stop"><div class="time">Midday</div><div class="what"><strong>Land at Kansai Intl. (KIX)</strong><p>Clear immigration, pick up your ICOCA card and pocket wifi/SIM at the airport.</p></div></div>
+          <div class="stop"><div class="time">Afternoon</div><div class="what"><strong>Transfer to Namba</strong><p>Nankai or JR rapid train, roughly 40–50 minutes. Check into your hostel and drop your bags.</p></div></div>
+          <div class="stop"><div class="time">Evening</div><div class="what"><strong>Dotonbori canal walk</strong><p>Glico Running Man sign, the giant crab and pufferfish signage, then dinner: takoyaki or okonomiyaki along the strip.</p></div></div>
+          <div class="stop"><div class="time">Night</div><div class="what"><strong>Shinsaibashi-suji arcade</strong><p>Wander the covered shopping street, Amerika-mura for streetwear if anyone's into that scene.</p></div></div>
+          <span class="daycost">~¥5,500 spend today</span>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="tag"><span class="d">2</span><span class="n">AMAZING PASS DAY 1</span></div>
+        <div>
+          <h3>Castle grounds, market alleys, retro Shinsekai</h3>
+          <div class="theme">Osaka Castle · Kuromon · Shinsekai</div>
+          <div class="stop"><div class="time">Morning</div><div class="what"><strong>Osaka Castle & park</strong><p>Entry covered by the Amazing Pass. If you're there in late March–April, the park's cherry blossoms are the main event.</p></div></div>
+          <div class="stop"><div class="time">Midday</div><div class="what"><strong>Kuromon Ichiba Market</strong><p>Graze for lunch — grilled scallops, wagyu skewers, fresh sashimi by the piece.</p></div></div>
+          <div class="stop"><div class="time">Afternoon</div><div class="what"><strong>Tsutenkaku Tower & Shinsekai</strong><p>Tower entry covered by the pass. The neighborhood around it is Osaka's retro, slightly gritty old town.</p></div></div>
+          <div class="stop"><div class="time">Evening</div><div class="what"><strong>Kushikatsu dinner in Shinsekai</strong><p>Deep-fried skewers, cheap and filling — the local rule is no double-dipping in the shared sauce.</p></div></div>
+          <span class="daycost">Amazing Pass ¥3,500 (or day 1 of the 2-day pass) + ~¥2,500 food</span>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="tag"><span class="d">3</span><span class="n">DAY TRIP</span></div>
+        <div>
+          <h3>Nara: deer, temples, a slower pace</h3>
+          <div class="theme">Nara Park · Todaiji Temple</div>
+          <div class="stop"><div class="time">Morning</div><div class="what"><strong>Train to Nara</strong><p>JR Yamatoji Line or Kintetsu line, roughly 35–45 minutes each way.</p></div></div>
+          <div class="stop"><div class="time">Midday</div><div class="what"><strong>Nara Park</strong><p>Free-roaming deer that bow for shika senbei crackers (~¥200 a pack). Bring small bills.</p></div></div>
+          <div class="stop"><div class="time">Afternoon</div><div class="what"><strong>Todaiji Temple</strong><p>Entrance ~¥600 — home to one of the largest bronze Buddha statues in the world.</p></div></div>
+          <div class="stop"><div class="time">Evening</div><div class="what"><strong>Back to Osaka</strong><p>Return train, then a low-key dinner near your hostel.</p></div></div>
+          <span class="daycost">~¥1,200 transport + ¥600 entrance + ~¥2,000 food</span>
+          <div class="altbox"><strong>Alternative:</strong> swap Nara for a Kyoto day trip — Fushimi Inari's torii gates are free to walk, and Kiyomizu-dera is ~¥500. Kyoto is a longer ride (~30–45 min by JR/Hankyu) but doable in a day.</div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="tag"><span class="d">4</span><span class="n">PICK YOUR DAY</span></div>
+        <div>
+          <h3>Splurge at USJ, or stay budget in Osaka</h3>
+          <div class="theme">Universal Studios Japan — or — Abeno & Sumiyoshi</div>
+          <div class="stop"><div class="time">Option A</div><div class="what"><strong>Universal Studios Japan</strong><p>1-day pass ¥8,900–11,900 depending on the date. Book online in advance — physical ticket booths no longer sell same-day tickets. Go on a weekday if your dates allow it; it's noticeably cheaper.</p></div></div>
+          <div class="stop"><div class="time">Option B</div><div class="what"><strong>Abeno Harukas + Sumiyoshi Taisha</strong><p>Japan's tallest building's observatory (~¥2,000), Shitennoji Temple, and Sumiyoshi Taisha shrine (free) — a full day for a fraction of the USJ cost.</p></div></div>
+          <span class="daycost">Option A: ~¥9,000–12,000 · Option B: ~¥3,500</span>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="tag"><span class="d">5</span><span class="n">DEPARTURE</span></div>
+        <div>
+          <h3>Last bites, souvenirs, fly out</h3>
+          <div class="theme">Kuromon Market · Shinsaibashi · KIX</div>
+          <div class="stop"><div class="time">Morning</div><div class="what"><strong>Last market run</strong><p>Kuromon Ichiba for one more round of street food, or Don Quijote for pasalubong — snacks, skincare, souvenirs.</p></div></div>
+          <div class="stop"><div class="time">Midday</div><div class="what"><strong>Check out and head to the airport</strong><p>Nankai or JR rapid back to KIX — budget at least 3 hours before an international flight.</p></div></div>
+          <span class="daycost">~¥3,000 shopping buffer</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="packing">
+      <h2>Packing for Osaka in spring</h2>
+      <p class="section-note">March–May swings from chilly mornings to warm afternoons, with a real chance of rain — Japan's spring is not all cherry blossoms and clear skies.</p>
+      <div class="grid2">
+        <div>
+          <ul class="plain">
+            <li>Layers — light jacket or cardigan for 8–15°C mornings, breathable tee underneath</li>
+            <li>A compact umbrella — spring showers are common and locals don't do ponchos</li>
+            <li>Comfortable walking shoes — expect 15,000+ steps a day between train stations and markets</li>
+            <li>A universal or Type-A plug adapter (Japan runs on 100V)</li>
+            <li>A small pouch of coins and small bills — many stalls and older shops are cash-only</li>
+            <li>Pocket tissues — public restrooms often don't stock paper towels or tissue</li>
+          </ul>
+        </div>
+        <div>
+          <ul class="plain">
+            <li>A reusable tote — plastic bags at convenience stores may cost extra</li>
+            <li>Allergy meds if pollen bothers you — spring is hay fever season in Kansai</li>
+            <li>A portable battery pack for maps and translation apps on long sightseeing days</li>
+            <li>One collared or slightly dressier outfit if you're doing a nicer dinner</li>
+            <li>Printed or downloaded copies of your visa, hotel booking, and flight itinerary</li>
+            <li>A daypack for the Nara/Kyoto day trip, separate from your main luggage</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="tips">
+      <h2>Money, apps, and small local rules</h2>
+      <div class="grid2">
+        <div>
+          <div class="tip-card"><h4>Cash still matters</h4><p>Convenience stores and trains take cards/IC, but small izakayas, market stalls, and some temples are cash-only. Withdraw yen from 7-Eleven or FamilyMart ATMs — they reliably accept foreign cards.</p></div>
+          <div class="tip-card"><h4>Get an ICOCA card</h4><p>Tap-to-ride on trains and buses, and it doubles as payment at convenience stores and vending machines. A small deposit is refundable when you return the card.</p></div>
+          <div class="tip-card"><h4>The Amazing Pass only pays off if you're moving</h4><p>It covers Osaka Metro, city buses, and 40+ attractions — but only wins on a genuinely packed sightseeing day. A slow day of just wandering Dotonbori is cheaper without it.</p></div>
+        </div>
+        <div>
+          <div class="tip-card"><h4>Useful apps</h4><p>Google Maps for transit routing, Google Translate (camera mode reads menus and signs on the spot), and Klook for booking USJ or Amazing Pass tickets ahead of time.</p></div>
+          <div class="tip-card"><h4>Split shared costs as a group</h4><p>Pocket wifi, taxis for late-night returns, and even hostel private rooms get noticeably cheaper per person when split 3–4 ways instead of going solo.</p></div>
+          <div class="tip-card"><h4>Quiet-hours etiquette</h4><p>Trains go silent-phone mode as the norm — calls are considered rude on board. Eating while walking through Dotonbori's food stalls is common, but it's frowned on elsewhere.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Prices are estimates gathered ahead of a spring trip and will shift with exchange rates, season, and how far ahead you book — recheck flight and USJ pricing closer to your dates.
+    </footer>
+
+  </main>
+</div>
+</body>
+</html>
